@@ -1,7 +1,13 @@
 
+DROP TABLE Customers;
+DROP TABLE Products;
+DROP TABLE Inventory;
+DROP TABLE Orders;
+DROP TABLE Manufacturers;
+
 create database if not exists NorthshoreWebstore;
 
-CREATE TABLE if not exists NorthshoreWebstore.Customer (
+CREATE TABLE if not exists NorthshoreWebstore.Customers (
 	id bigint AUTO_INCREMENT,
 	firstname varchar(30),
 	lastname varchar(30),

@@ -1,7 +1,13 @@
-var express   =    require("express");
- var mysql     =    require('mysql');
+ var express   =    require("express");
+ var mysql     =    require("mysql");
+ var bodyParser =   require("body-parser");
+ var fs        =    require("fs");
  var app       =    express();
- var fs = require("fs");
+
+ app.use(bodyParser.urlencoded({ extended: false }));
+ app.use(bodyParser.json());
+
+
 
  var pool      =    mysql.createPool({
      connectionLimit : 100, //sets how many can connect
@@ -37,8 +43,42 @@ var express   =    require("express");
    });
  }
 
+
  app.get("/",function(req,res){-
          handle_database(req,res);
+ });
+
+ app.post('/addUser', function(req,res) {
+   var firstName = req.body.first_name;
+   var lastName = req.body.last_name;
+
+   console.log(firstName + " " + lastName);
+
+   var params = {firstname: firstName, lastname: lastName};
+   var query = pool.query('INSERT INTO Customers SET ?', params, function(err, result) {
+     if (!err)
+       console.log('The solution is: ', result);
+     else
+       console.log('Error while performing Query.');
+
+   });
+   res.end("User "+ firstName + ' ' + lastName + " added");
+ });
+
+ app.get('/displayUsers', function(req,res){
+   var query = pool.query('SELECT * FROM Customers', function(err, rows, fields) {
+     if (!err)
+       console.log('Users: ', rows);
+       //rows[2].id;
+
+     else
+       console.log('Error while performing Query.');
+
+     res.end("");
+   });
+
+
+   //res.end("Request working");
  });
 
  app.get('/listUsers', function (req, res) {
@@ -50,7 +90,7 @@ var express   =    require("express");
 
 // app.listen(3000);
 
-var server = app.listen(8081, function () {
+  var server = app.listen(8081, function () {
 
   var host = server.address().address
   var port = server.address().port
