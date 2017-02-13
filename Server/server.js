@@ -1,14 +1,15 @@
+//Dependencies
  var express   =    require("express");
  var mysql     =    require("mysql");
  var bodyParser =   require("body-parser");
  var fs        =    require("fs");
- var app       =    express();
 
+//Express
+ var app       =    express();
  app.use(bodyParser.urlencoded({ extended: false }));
  app.use(bodyParser.json());
 
-
-
+//MySQL Configuration
  var pool      =    mysql.createPool({
      connectionLimit : 100, //sets how many can connect
      host     : 'localhost',
@@ -43,6 +44,9 @@
    });
  }
 
+ //Routes
+ //app.use('/api', require('./routes/users.js'));
+
 
  app.get("/",function(req,res){-
          handle_database(req,res);
@@ -65,28 +69,62 @@
    res.end("User "+ firstName + ' ' + lastName + " added");
  });
 
- app.get('/displayUsers', function(req,res){
-   var query = pool.query('SELECT * FROM Customers', function(err, rows, fields) {
-     if (!err)
-       console.log('Users: ', rows);
-       //rows[2].id;
+ app.post('/updateUser', function(req, res) {
+   var firstName = req.body.first_name;
+   var lastName = req.body.last_name;
+   var customerId = req.body.id;
 
+   var query = pool.query('UPDATE Customers SET firstname = ?, lastname = ? WHERE id = ?', [firstName, lastName, customerId], function(err, result) {
+     if (!err)
+       console.log('The solution is: ', result);
      else
        console.log('Error while performing Query.');
 
-     res.end("");
+     });
+     res.end("User id "+ customerId + " updated.");
+ });
+
+ app.get('/displayUsers', function(req, res){
+   var query = pool.query('SELECT * FROM Customers', function(err, rows, fields) {
+     if (!err) {
+       console.log('Users: ', rows);
+       res.json(rows);
+     }
+       //rows[2].id;
+     else
+       console.log('Error while performing Query.');
    });
+   //res.end("Done.");
+  });
+
+app.delete('/deleteUser', function(req, res) {
+  console.log("testing deleteUser");
+
+  var customerId = req.body.id;
+
+  var query = pool.query('DELETE FROM Customers WHERE id = ?', customerId, function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+  });
+  res.end("Deleted user " + customerId);
+});
+
+
 
 
    //res.end("Request working");
- });
+
 
  app.get('/listUsers', function (req, res) {
     fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
         console.log( data );
         res.end( data );
     });
- })
+ });
+
+//Start Server
 
 // app.listen(3000);
 
