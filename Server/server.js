@@ -111,6 +111,67 @@ app.delete('/deleteUser', function(req, res) {
   res.end("Deleted user " + customerId);
 });
 
+//Product Routes
+
+app.get('/products/displayProducts', function(req, res){
+  var query = pool.query('SELECT * FROM Products', function(err, rows, fields) {
+    if (!err) {
+      console.log('Products: ', rows);
+      res.json(rows);
+    }
+      //rows[2].id;
+    else
+      console.log('Error while performing Query.');
+  });
+  //res.end("Done.");
+ });
+
+app.post('/products/addProduct', function(req,res) {
+  var product_id = req.body.product_id;
+  var product_name = req.body.product_name;
+  var product_category = req.body.category;
+  var product_manufacturer = req.body.manufacturer;
+
+  var params = {productId: product_id, productName: product_name, category: product_category, manufacturer: product_manufacturer};
+  var query = pool.query('INSERT INTO Products SET ?', params, function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+
+  });
+  res.end("Product " + product_name + " added");
+});
+
+app.post('/products/updateProduct', function(req, res) {
+  var product_id = req.body.product_id;
+  var product_name = req.body.product_name;
+  var product_category = req.body.category;
+  var product_manufacturer = req.body.manufacturer;
+
+  var query = pool.query('UPDATE Products SET productName = ?, category = ?, manufacturer = ? WHERE productId = ?', [product_name, product_category, product_manufacturer, product_id], function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+
+    });
+    res.end("Product "+ product_name + " updated.");
+});
+
+app.delete('/products/deleteProduct', function(req, res) {
+
+  var product_id = req.body.product_id;
+
+  var query = pool.query('DELETE FROM Products WHERE productId = ?', product_id, function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+  });
+  res.end("Deleted product " + product_id);
+});
+
 
 
 
