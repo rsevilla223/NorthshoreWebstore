@@ -172,6 +172,118 @@ app.delete('/products/deleteProduct', function(req, res) {
   res.end("Deleted product " + product_id);
 });
 
+//Inventory Routes
+
+app.post('/inventory/addInventory', function(req,res) {
+  var product_id = req.body.product_id;
+  var product_inventory = req.body.inventory;
+
+  var params = {productId: product_id, inventory: product_inventory};
+
+  var query = pool.query('INSERT INTO Inventory SET ?', params, function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+
+  });
+  res.end("Product " + product_id + " inventory set to " + product_inventory);
+});
+
+app.post('/inventory/updateInventory', function(req, res) {
+  var product_id = req.body.product_id;
+  var product_inventory = req.body.inventory;
+
+  var query = pool.query('UPDATE Inventory SET inventory = ? WHERE productId = ?', [product_inventory, product_id], function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+
+    });
+    res.end("Product "+ product_id + " updated inventory to " + product_inventory);
+});
+
+app.post('/inventory/decrementInventory', function(req, res) {
+  var product_id = req.body.product_id;
+  var decrement = req.body.decrement;
+
+  var query = pool.query('UPDATE Inventory SET inventory = GREATEST(0, inventory - ?) WHERE productId = ?', [decrement, product_id], function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+
+    });
+    res.end("Product "+ product_id + " updated inventory.");
+});
+
+app.delete('/inventory/deleteInventory', function(req, res) {
+
+  var product_id = req.body.product_id;
+
+  var query = pool.query('DELETE FROM Inventory WHERE productId = ?', product_id, function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+  });
+  res.end("Deleted product inventory " + product_id);
+});
+
+//Order Routes
+
+app.post('/orders/addOrder', function(req,res) {
+  //var order_id = req.body.order_id;
+  var customer_id = req.body.customer_id;
+  var product_id = req.body.product_id;
+  var product_quantity = req.body.product_quantity;
+
+  var params = {customerId: customer_id, productId: product_id, quantity: product_quantity};
+  var query = pool.query('INSERT INTO Orders SET ?', params, function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+
+  });
+  res.end("Order added");
+});
+
+app.post('/orders/updateOrder', function(req, res) {
+  var order_id = req.body.order_id;
+  var customer_id = req.body.customer_id;
+  var product_id = req.body.product_id;
+  var product_quantity = req.body.product_quantity;
+
+  var query = pool.query('UPDATE Orders SET customerId = ?, productId = ?, quantity = ? WHERE orderId = ?', [customer_id, product_id, product_quantity, order_id], function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+
+    });
+    res.end("Order "+ order_id + " updated.");
+});
+
+app.delete('/orders/deleteOrder', function(req, res) {
+
+  var order_id = req.body.order_id;
+
+  var query = pool.query('DELETE FROM Orders WHERE orderId = ?', order_id, function(err, result) {
+    if (!err)
+      console.log('The solution is: ', result);
+    else
+      console.log('Error while performing Query.');
+  });
+  res.end("Deleted order " + order_id);
+});
+
+
+
+
+
+
 
 
 

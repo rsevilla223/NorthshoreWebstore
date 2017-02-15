@@ -3,7 +3,6 @@ DROP TABLE Customers;
 DROP TABLE Products;
 DROP TABLE Inventory;
 DROP TABLE Orders;
-DROP TABLE Manufacturers;
 
 create database if not exists NorthshoreWebstore;
 
@@ -30,13 +29,8 @@ CREATE TABLE if not exists NorthshoreWebstore.Inventory (
 
 CREATE TABLE if not exists NorthshoreWebstore.Orders (
 	orderId bigint AUTO_INCREMENT,
+	customerId int,
 	productId int,
 	quantity int,
 	PRIMARY KEY(orderId)
-);
-
-CREATE TABLE if not exists NorthshoreWebstore.Manufacturers (
-	manName varchar(30),
-	manId bigint,
-	PRIMARY KEY (manId)
 );
