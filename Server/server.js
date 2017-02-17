@@ -3,11 +3,13 @@
  var mysql     =    require("mysql");
  var bodyParser =   require("body-parser");
  var fs        =    require("fs");
+ var cors     =     require("cors");
 
 //Express
  var app       =    express();
  app.use(bodyParser.urlencoded({ extended: false }));
  app.use(bodyParser.json());
+ app.use(cors());
 
 //MySQL Configuration
  var pool      =    mysql.createPool({
@@ -52,7 +54,7 @@
          handle_database(req,res);
  });
 
- app.post('/addUser', function(req,res) {
+ app.post('/users/addUser', function(req,res) {
    var firstName = req.body.first_name;
    var lastName = req.body.last_name;
 
@@ -69,7 +71,7 @@
    res.end("User "+ firstName + ' ' + lastName + " added");
  });
 
- app.post('/updateUser', function(req, res) {
+ app.post('/users/updateUser', function(req, res) {
    var firstName = req.body.first_name;
    var lastName = req.body.last_name;
    var customerId = req.body.id;
@@ -84,7 +86,7 @@
      res.end("User id "+ customerId + " updated.");
  });
 
- app.get('/displayUsers', function(req, res){
+ app.get('/users/displayUsers', function(req, res){
    var query = pool.query('SELECT * FROM Customers', function(err, rows, fields) {
      if (!err) {
        console.log('Users: ', rows);
@@ -97,7 +99,7 @@
    //res.end("Done.");
   });
 
-app.delete('/deleteUser', function(req, res) {
+app.delete('/users/deleteUser', function(req, res) {
   console.log("testing deleteUser");
 
   var customerId = req.body.id;
@@ -114,7 +116,8 @@ app.delete('/deleteUser', function(req, res) {
 //Product Routes
 
 app.get('/products/displayProducts', function(req, res){
-  var query = pool.query('SELECT * FROM Products', function(err, rows, fields) {
+  //var query = pool.query('SELECT * FROM Products', function(err, rows, fields) {
+  var query = pool.query('select products.*, inventory.inventory FROM products LEFT JOIN inventory ON products.productId = inventory.productId', function(err, rows, fields) {
     if (!err) {
       console.log('Products: ', rows);
       res.json(rows);
@@ -125,6 +128,21 @@ app.get('/products/displayProducts', function(req, res){
   });
   //res.end("Done.");
  });
+
+ app.post('/products/findProduct', function(req, res){
+   product_id = req.body.product_id;
+   //var query = pool.query('SELECT * FROM Products', function(err, rows, fields) {
+   var query = pool.query('select products.*, inventory.inventory FROM products LEFT JOIN inventory ON products.productId = inventory.productId WHERE products.productId = ?', product_id, function(err, rows, fields) {
+     if (!err) {
+       console.log('Product: ', rows);
+       res.json(rows);
+     }
+       //rows[2].id;
+     else
+       console.log('Error while performing Query.');
+   });
+   //res.end("Done.");
+  });
 
 app.post('/products/addProduct', function(req,res) {
   var product_id = req.body.product_id;
@@ -206,7 +224,7 @@ app.post('/inventory/updateInventory', function(req, res) {
 
 app.post('/inventory/decrementInventory', function(req, res) {
   var product_id = req.body.product_id;
-  var decrement = req.body.decrement;
+  var decrement = req.body.product_quantity;
 
   var query = pool.query('UPDATE Inventory SET inventory = GREATEST(0, inventory - ?) WHERE productId = ?', [decrement, product_id], function(err, result) {
     if (!err)
