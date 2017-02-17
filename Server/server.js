@@ -251,6 +251,21 @@ app.delete('/inventory/deleteInventory', function(req, res) {
 
 //Order Routes
 
+app.post('/orders/getCustomerOrders', function(req, res){
+  var customer_id = req.body.customer_id;
+  //var query = pool.query('SELECT * FROM Products', function(err, rows, fields) {
+  var query = pool.query('SELECT * from Orders WHERE customerId = ?', customer_id, function(err, rows, fields) {
+    if (!err) {
+      console.log('Customer orders: ', rows);
+      res.json(rows);
+    }
+      //rows[2].id;
+    else
+      console.log('Error while performing Query.');
+  });
+  //res.end("Done.");
+ });
+
 app.post('/orders/addOrder', function(req,res) {
   //var order_id = req.body.order_id;
   var customer_id = req.body.customer_id;
@@ -296,6 +311,8 @@ app.delete('/orders/deleteOrder', function(req, res) {
   });
   res.end("Deleted order " + order_id);
 });
+
+
 
 
 

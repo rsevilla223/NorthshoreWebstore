@@ -34,3 +34,22 @@ CREATE TABLE if not exists NorthshoreWebstore.Orders (
 	quantity int,
 	PRIMARY KEY(orderId)
 );
+
+INSERT INTO Customers (firstname, lastname) VALUES ('Ryan', 'Sevilla');
+INSERT INTO Customers (firstname, lastname) VALUES ('George', 'Washington');
+INSERT INTO Customers (firstname, lastname) VALUES ('Michael', 'Jordan');
+INSERT INTO Customers (firstname, lastname) VALUES ('Anthony', 'Rizzo');
+
+INSERT INTO Products (productId, productName, category, manufacturer) VALUES (8675309, 'Skittles', 'candy', 'Wonka');
+INSERT INTO Products (productId, productName, category, manufacturer) VALUES (8675308, 'Spree', 'candy', 'Nestle');
+INSERT INTO Products (productId, productName, category, manufacturer) VALUES (8675307, 'Jolly Ranchers', 'candy', 'Mars');
+INSERT INTO Products (productId, productName, category, manufacturer) VALUES (8675306, 'Gummy worms', 'candy', 'Black Forest');
+
+INSERT INTO Inventory (productId, inventory) VALUES (8675309, 28);
+INSERT INTO Inventory (productId, inventory) VALUES (8675308, 26);
+INSERT INTO Inventory (productId, inventory) VALUES (8675307, 13);
+INSERT INTO Inventory (productId, inventory) VALUES (8675306, 53);
+
+INSERT INTO Orders (orderId, customerId, productId, quantity) VALUES (1, 2, 8675308, 24);
+INSERT INTO Orders (orderId, customerId, productId, quantity) VALUES (3, 2, 8675307, 38);
+INSERT INTO Orders (orderId, customerId, productId, quantity) VALUES (2, 3, 8675306, 36);
