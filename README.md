@@ -4,9 +4,9 @@ A webstore that uses a node.js webservice to operate and a client to test said w
 This service contains basic CRUD functions that utilize a mySQL database to store and retrieve data.
 The webservice uses four subroutes to function which are users, products, inventory, and orders. Some examples of these routes:
 
-/products/displayProducts
-/inventory/addInventory
-/users/addUser
+/products/displayProducts,
+/inventory/addInventory,
+/users/addUser,
 /orders/deleteOrder
 
 And so on, the rest of the routes can be found in the server.js file.
