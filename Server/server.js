@@ -312,16 +312,6 @@ app.delete('/orders/deleteOrder', function(req, res) {
   res.end("Deleted order " + order_id);
 });
 
-
-
-
-
-
-
-
-
-
-
    //res.end("Request working");
 
 
