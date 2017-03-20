@@ -4,6 +4,7 @@
  var bodyParser =   require("body-parser");
  var fs        =    require("fs");
  var cors     =     require("cors");
+ var chaos    =     require("./chaos.js");
 
 //Express
  var app       =    express();
@@ -46,6 +47,16 @@
    });
  }
 
+function errorGenerator() {
+  switch (errorNumber) {
+    case 1:
+
+      break;
+
+    default:
+  }
+}
+
  //Routes
  //app.use('/api', require('./routes/users.js'));
 
@@ -55,6 +66,8 @@
  });
 
  app.post('/users/addUser', function(req,res) {
+
+
    var firstName = req.body.first_name;
    var lastName = req.body.last_name;
 
@@ -86,6 +99,42 @@
      res.end("User id "+ customerId + " updated.");
  });
 
+ app.get('/users/testDisplayUsers2', function(req, res){
+
+   if(chaos.errorGenerator(res)) return;
+
+   var query = pool.query('SELECT * FROM Customers', function(err, rows, fields) {
+     if (!err) {
+       console.log('Users: ', rows);
+       res.json(rows);
+     }
+       //rows[2].id;
+     else
+       console.log('Error while performing Query.');
+   });
+  });
+
+ app.get('/users/testDisplayUsers', function(req, res){
+   errorNumber = getRandomInt(0,10);
+   switch (errorNumber) {
+     case 1:
+      res.status(404).send("Oh uh, something went wrong. Please try again.");
+       break;
+
+     default:
+     var query = pool.query('SELECT * FROM Customers', function(err, rows, fields) {
+       if (!err) {
+         console.log('Users: ', rows);
+         res.json(rows);
+       }
+         //rows[2].id;
+       else
+         console.log('Error while performing Query.');
+     });
+   }
+
+  });
+
  app.get('/users/displayUsers', function(req, res){
    var query = pool.query('SELECT * FROM Customers', function(err, rows, fields) {
      if (!err) {
@@ -96,7 +145,6 @@
      else
        console.log('Error while performing Query.');
    });
-   //res.end("Done.");
   });
 
 app.delete('/users/deleteUser', function(req, res) {
@@ -116,7 +164,7 @@ app.delete('/users/deleteUser', function(req, res) {
 //Product Routes
 
 app.get('/products/displayProducts', function(req, res){
-  //var query = pool.query('SELECT * FROM Products', function(err, rows, fields) {
+  if(chaos.errorGenerator(res)) return;
   var query = pool.query('select products.*, inventory.inventory FROM products LEFT JOIN inventory ON products.productId = inventory.productId', function(err, rows, fields) {
     if (!err) {
       console.log('Products: ', rows);
@@ -130,6 +178,7 @@ app.get('/products/displayProducts', function(req, res){
  });
 
  app.post('/products/findProduct', function(req, res){
+   if(chaos.errorGenerator(res)) return;
    product_id = req.body.product_id;
    //var query = pool.query('SELECT * FROM Products', function(err, rows, fields) {
    var query = pool.query('select products.*, inventory.inventory FROM products LEFT JOIN inventory ON products.productId = inventory.productId WHERE products.productId = ?', product_id, function(err, rows, fields) {
@@ -145,6 +194,7 @@ app.get('/products/displayProducts', function(req, res){
   });
 
 app.post('/products/addProduct', function(req,res) {
+  if(chaos.errorGenerator(res)) return;
   var product_id = req.body.product_id;
   var product_name = req.body.product_name;
   var product_category = req.body.category;
@@ -162,6 +212,7 @@ app.post('/products/addProduct', function(req,res) {
 });
 
 app.post('/products/updateProduct', function(req, res) {
+  if(chaos.errorGenerator(res)) return;
   var product_id = req.body.product_id;
   var product_name = req.body.product_name;
   var product_category = req.body.category;
@@ -178,6 +229,7 @@ app.post('/products/updateProduct', function(req, res) {
 });
 
 app.delete('/products/deleteProduct', function(req, res) {
+  if(chaos.errorGenerator(res)) return;
 
   var product_id = req.body.product_id;
 
@@ -193,6 +245,7 @@ app.delete('/products/deleteProduct', function(req, res) {
 //Inventory Routes
 
 app.post('/inventory/addInventory', function(req,res) {
+  if(chaos.errorGenerator(res)) return;
   var product_id = req.body.product_id;
   var product_inventory = req.body.inventory;
 
@@ -209,6 +262,7 @@ app.post('/inventory/addInventory', function(req,res) {
 });
 
 app.post('/inventory/updateInventory', function(req, res) {
+  if(chaos.errorGenerator(res)) return;
   var product_id = req.body.product_id;
   var product_inventory = req.body.inventory;
 
@@ -223,6 +277,7 @@ app.post('/inventory/updateInventory', function(req, res) {
 });
 
 app.post('/inventory/decrementInventory', function(req, res) {
+  if(chaos.errorGenerator(res)) return;
   var product_id = req.body.product_id;
   var decrement = req.body.product_quantity;
 
@@ -237,6 +292,7 @@ app.post('/inventory/decrementInventory', function(req, res) {
 });
 
 app.delete('/inventory/deleteInventory', function(req, res) {
+  if(chaos.errorGenerator(res)) return;
 
   var product_id = req.body.product_id;
 
@@ -252,6 +308,7 @@ app.delete('/inventory/deleteInventory', function(req, res) {
 //Order Routes
 
 app.post('/orders/getCustomerOrders', function(req, res){
+  if(chaos.errorGenerator(res)) return;
   var customer_id = req.body.customer_id;
   //var query = pool.query('SELECT * FROM Products', function(err, rows, fields) {
   var query = pool.query('SELECT * from Orders WHERE customerId = ?', customer_id, function(err, rows, fields) {
@@ -267,6 +324,7 @@ app.post('/orders/getCustomerOrders', function(req, res){
  });
 
 app.post('/orders/addOrder', function(req,res) {
+  if(chaos.errorGenerator(res)) return;
   //var order_id = req.body.order_id;
   var customer_id = req.body.customer_id;
   var product_id = req.body.product_id;
@@ -284,6 +342,7 @@ app.post('/orders/addOrder', function(req,res) {
 });
 
 app.post('/orders/updateOrder', function(req, res) {
+  if(chaos.errorGenerator(res)) return;
   var order_id = req.body.order_id;
   var customer_id = req.body.customer_id;
   var product_id = req.body.product_id;
@@ -300,6 +359,7 @@ app.post('/orders/updateOrder', function(req, res) {
 });
 
 app.delete('/orders/deleteOrder', function(req, res) {
+  if(chaos.errorGenerator(res)) return;
 
   var order_id = req.body.order_id;
 

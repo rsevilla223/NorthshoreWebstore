@@ -2,11 +2,17 @@
 
 var getAllUsers = function() {
   getJSON("http://localhost:8081/users/displayUsers", function(err, data) {
-    console.log(data);
-    document.write("Users: <br>");
-    for(var i=0; i<data.length; i++){
-      document.write("<br>Name: " + data[i].firstname + ' ' + data[i].lastname);
+    if (!err) {
+      console.log(data);
+      document.write("Users: <br>");
+      for(var i=0; i<data.length; i++){
+        document.write("<br>Name: " + data[i].firstname + ' ' + data[i].lastname);
+      }
     }
+    else {
+
+    }
+
   });
 }
 
