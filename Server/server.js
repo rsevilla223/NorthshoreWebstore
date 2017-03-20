@@ -136,6 +136,7 @@ function errorGenerator() {
   });
 
  app.get('/users/displayUsers', function(req, res){
+   if(chaos.errorGenerator(res)) return;
    var query = pool.query('SELECT * FROM Customers', function(err, rows, fields) {
      if (!err) {
        console.log('Users: ', rows);

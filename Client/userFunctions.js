@@ -1,7 +1,8 @@
 //User Functions
 
 var getAllUsers = function() {
-  getJSON("http://localhost:8081/users/displayUsers", function(err, data) {
+
+  getJSON("http://localhost:8081/users/displayUsers", function (err, data) {
     if (!err) {
       console.log(data);
       document.write("Users: <br>");
@@ -9,11 +10,18 @@ var getAllUsers = function() {
         document.write("<br>Name: " + data[i].firstname + ' ' + data[i].lastname);
       }
     }
-    else {
-
+    else if (err == 500) {
+      retry = false;
+      exponentialBackoff(getAllUsers, 2, 200, function(result) {
+        console.log("The result is ", result)
+      });
+      //backoff(getAllUsers);
     }
-
+    else {
+      console.log("A business type error has occured. " + err);
+    }
   });
+  return true;
 }
 
 var addUser = function(user) {
