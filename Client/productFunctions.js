@@ -10,6 +10,13 @@ var showAllProducts = function () {
       }
     }
 
+    else if (err == 500) {
+      retry = false;
+      exponentialBackoff(getAllUsers, 2, 200, function(result) {
+        console.log("The result is ", result)
+      });
+    }
+
     else {
       console.log("An error has occured. " + err);
     }

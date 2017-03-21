@@ -47,26 +47,13 @@
    });
  }
 
-function errorGenerator() {
-  switch (errorNumber) {
-    case 1:
-
-      break;
-
-    default:
-  }
-}
-
- //Routes
- //app.use('/api', require('./routes/users.js'));
-
 
  app.get("/",function(req,res){-
          handle_database(req,res);
  });
 
  app.post('/users/addUser', function(req,res) {
-
+   if(chaos.errorGenerator(res)) return;
 
    var firstName = req.body.first_name;
    var lastName = req.body.last_name;
@@ -85,6 +72,7 @@ function errorGenerator() {
  });
 
  app.post('/users/updateUser', function(req, res) {
+   if(chaos.errorGenerator(res)) return;
    var firstName = req.body.first_name;
    var lastName = req.body.last_name;
    var customerId = req.body.id;
@@ -149,6 +137,7 @@ function errorGenerator() {
   });
 
 app.delete('/users/deleteUser', function(req, res) {
+  if(chaos.errorGenerator(res)) return;
   console.log("testing deleteUser");
 
   var customerId = req.body.id;
