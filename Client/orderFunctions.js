@@ -1,5 +1,5 @@
 var createOrder = function(order) {
-  postJSON("http://localhost:8081/orders/addOrder", order, function(err, data) {
+  postJSON("http://localhost:8000/orders/addOrder", order, function(err, data) {
     if (!err) {
       console.log("Creating order of 3 Skittles...");
     }
@@ -18,7 +18,7 @@ var createOrder = function(order) {
 }
 
 var showOrders = function(user) {
-  postJSON("http://localhost:8081/orders/getCustomerOrders", user, function(err, data) {
+  postJSON("http://localhost:8000/orders/getCustomerOrders", user, function(err, data) {
     console.log("fetching orders");
     if (!err) {
       for(var i = 0; i<data.length; i++) {
@@ -37,7 +37,7 @@ var showOrders = function(user) {
 }
 
 var updateOrder = function(order) {
-  postJSON("http://localhost:8081/orders/updateOrder", order, function(err, data) {
+  postJSON("http://localhost:8000/orders/updateOrder", order, function(err, data) {
     if (!err) {
       console.log("<br>Updating order...<br>");
     }
@@ -52,7 +52,7 @@ var updateOrder = function(order) {
 }
 
 var deleteOrder = function(order) {
-  deleteJSON("http://localhost:8081/orders/deleteOrder", order, function(err, data) {
+  deleteJSON("http://localhost:8000/orders/deleteOrder", order, function(err, data) {
     if (!err) {
       console.log("<br>Deleting order...<br>");
     }

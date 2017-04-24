@@ -1,10 +1,13 @@
 //Dependencies
+ var args = process.argv.splice(2);
  var express   =    require("express");
  var mysql     =    require("mysql");
  var bodyParser =   require("body-parser");
  var fs        =    require("fs");
  var cors     =     require("cors");
  var chaos    =     require("./chaos.js");
+ var http = require('http');
+
 
 //Express
  var app       =    express();
@@ -376,11 +379,24 @@ app.delete('/orders/deleteOrder', function(req, res) {
 
 // app.listen(3000);
 
-  var server = app.listen(8081, function () {
+  var server = app.listen(args[0] || 8000/*or just 8081*/, function () {
 
   var host = server.address().address
   var port = server.address().port
 
   console.log("Example app listening at http://%s:%s", host, port)
 
-  })
+})
+
+/*var server = http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type' : 'text/plain'});
+    //127.0.0.1:
+
+    //var host = server.address().address
+    //var port = server.address().port
+
+    //console.log("Example app listening at http://%s:%s", host, port)
+});
+
+// Listen to a specified port, or default to 8000
+server.listen(args[0] || 8000);*/

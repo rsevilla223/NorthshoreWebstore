@@ -2,7 +2,7 @@
 
 var getAllUsers = function() {
 
-  getJSON("http://localhost:8081/users/displayUsers", function (err, data) {
+  getJSON("http://localhost:8000/users/displayUsers", function (err, data) {
     if (!err) {
       //console.log(data);
       document.write("Users: <br>");
@@ -11,7 +11,7 @@ var getAllUsers = function() {
       }
     }
     else if (err == 500) {
-      retry = false;
+      //retry = false;
       exponentialBackoff(getAllUsers, 2, 200, function(result) {
         console.log("The result is ", result)
       });
@@ -24,7 +24,7 @@ var getAllUsers = function() {
 }
 
 var addUser = function(user) {
-  postJSON("http://localhost:8081/users/addUser", user, function(err, data) {
+  postJSON("http://localhost:8000/users/addUser", user, function(err, data) {
     if (!err){
       console.log("Adding new user...");
     }
@@ -41,7 +41,7 @@ var addUser = function(user) {
 }
 
 var updateUser = function(user) {
-  postJSON("http://localhost:8081/users/updateUser", user, function(err, data) {
+  postJSON("http://localhost:8000/users/updateUser", user, function(err, data) {
     if (!err){
       console.log("Updating user...");
     }
@@ -59,7 +59,7 @@ var updateUser = function(user) {
 }
 
 var deleteUser = function(user) {
-  deleteJSON("http://localhost:8081/users/deleteUser", user, function(err, data) {
+  deleteJSON("http://localhost:8000/users/deleteUser", user, function(err, data) {
     if (!err){
       console.log("Deleting user...");
     }

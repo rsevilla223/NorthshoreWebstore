@@ -1,5 +1,5 @@
 var showAllProducts = function () {
-  getJSON("http://localhost:8081/products/displayProducts", function(err, data) {
+  getJSON("http://localhost:8000/products/displayProducts", function(err, data) {
 
 
     if (!err) {
