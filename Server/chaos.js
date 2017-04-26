@@ -5,7 +5,7 @@ function getRandomInt(min, max) {
 var methods = {
 
   errorGenerator:  function(res) {
-    errorNumber = getRandomInt(0,10);
+    errorNumber = getRandomInt(2,10);
     switch (errorNumber) {
       case 1:
         res.status(500).send("Oh uh, something went wrong. Please try again.");

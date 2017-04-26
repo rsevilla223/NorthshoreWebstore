@@ -1,9 +1,12 @@
 //User Functions
 
+
 var getAllUsers = function() {
 
   getJSON("http://localhost:8000/users/displayUsers", function (err, data) {
     if (!err) {
+      var eh = 1;
+      console.log(eh++);
       //console.log(data);
       document.write("Users: <br>");
       for(var i=0; i<data.length; i++){
@@ -26,6 +29,7 @@ var getAllUsers = function() {
 var addUser = function(user) {
   postJSON("http://localhost:8000/users/addUser", user, function(err, data) {
     if (!err){
+      console.log(data);
       console.log("Adding new user...");
     }
     else if (err == 500) {

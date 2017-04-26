@@ -42,7 +42,7 @@ var currentServer = 1;
 function loadBalanceProxy(req, res){
     var cur = currentServer%servers.length;
     currentServer++;
-    console.log("Current server is: " + currentServer);
+    //console.log("Current request is: " + currentServer);
     var target = servers[cur];
     proxy.web(req, res, {
         target: target
